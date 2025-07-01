@@ -1,0 +1,98 @@
+openapi: 3.0.0
+info:
+  title: EventTracker API
+  description: API REST que expone eventos y fuentes cargados desde archivos CSV.
+  version: 1.0.0
+  contact:
+    name: Soporte Técnico
+    email: soporte@eventtracker.com
+    url: https://github.com/tuusuario/eventtracker
+
+servers:
+  - url: http://localhost:8080
+    description: Servidor local de desarrollo
+
+paths:
+  /api/eventos:
+    get:
+      summary: Listar eventos
+      description: Retorna la lista de eventos, con posibilidad de filtrado por fuente o rango de fechas.
+      parameters:
+        - in: query
+          name: fuenteId
+          schema:
+            type: integer
+          required: false
+          description: ID de la fuente a filtrar
+        - in: query
+          name: desde
+          schema:
+            type: string
+            format: date-time
+          required: false
+          description: Fecha inicial (formato ISO 8601)
+        - in: query
+          name: hasta
+          schema:
+            type: string
+            format: date-time
+          required: false
+          description: Fecha final (formato ISO 8601)
+      responses:
+        '200':
+          description: Lista de eventos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Evento'
+
+  /api/fuentes:
+    get:
+      summary: Listar fuentes
+      description: Retorna la lista de fuentes disponibles
+      responses:
+        '200':
+          description: Lista de fuentes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Fuente'
+
+components:
+  schemas:
+    Evento:
+      type: object
+      properties:
+        id:
+          type: integer
+        fuenteId:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+        valor:
+          type: number
+          format: float
+        latitud:
+          type: number
+          format: float
+        longitud:
+          type: number
+          format: float
+    Fuente:
+      type: object
+      properties:
+        id:
+          type: integer
+        nombre:
+          type: string
+        latitud:
+          type: number
+          format: float
+        longitud:
+          type: number
+          format: float
