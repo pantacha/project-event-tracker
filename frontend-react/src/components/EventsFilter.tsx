@@ -1,10 +1,5 @@
+import type { Filters } from "../types";
 
-
-type Filters = {
-    fuenteNombre: string,
-    dataFrom: string,
-    dataTo: string,
-};
 
 type EventsFilterProps = {
     filters: Filters,
